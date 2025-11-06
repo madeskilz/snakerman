@@ -1,33 +1,12 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Snake — Snakerman</title>
-  <style>
-    /* Minimal page styling */
-    :root { --bg: #111; --panel:#0f1720; --accent:#66ff66; }
-    html,body { height:100%; margin:0; font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial; background:var(--bg); color:#eee; }
-    .wrap { display:flex; gap:16px; padding:20px; align-items:flex-start; }
-    canvas { background:var(--panel); border:4px solid #222; image-rendering:pixelated; }
-    .sidebar { width:220px; }
-    h1 { margin:0 0 8px 0; font-size:18px; }
-    .meta { margin-top:12px; font-size:14px; color:#bbb; }
-    button { margin-top:8px; padding:8px 12px; border-radius:6px; cursor:pointer; }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <canvas id="game" width="480" height="480" aria-label="Snake game canvas"></canvas>
-    <div class="sidebar">
-      <h1>Snakerman</h1>
-      <div>Score: <span id="score">0</span></div>
-      <div class="meta">Controls: Arrow keys or WASD</div>
-      <div class="meta">Reload to reset</div>
-      <button id="pauseBtn">Pause</button>
-    </div>
-  </div>
-
-  <script type="module" src="./src/main.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Snakerman</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

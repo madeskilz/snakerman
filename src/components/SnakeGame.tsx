@@ -12,9 +12,9 @@ const COLS = 24;
 const ROWS = 24;
 const TICK_MS = 120;
 // choose how many obstacles to place on start (can be 0)
-const OBSTACLE_COUNT = 12;
+const OBSTACLE_COUNT = 4;
 
-export default function SnakeGame(): JSX.Element {
+export default function SnakeGame(): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const gameRef = useRef<Game | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -106,17 +106,17 @@ export default function SnakeGame(): JSX.Element {
     ctx.fillStyle = '#0b1220';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // obstacles (red)
+    // obstacles (draw before food & snake)
     if (g.obstacles && g.obstacles.length > 0) {
-      ctx.fillStyle = '#ff0000'; // red for obstacles
+      ctx.fillStyle = '#ff3b30'; // vivid red obstacles
       for (const o of g.obstacles) {
         ctx.fillRect(o.x * cellW, o.y * cellH, cellW, cellH);
       }
     }
 
-    // food (lighter green)
+    // food (distinct shade of snake green)
     if (g.food) {
-      ctx.fillStyle = '#99ff99'; // lighter green for food
+      ctx.fillStyle = '#3cff8f';
       ctx.fillRect(g.food.x * cellW, g.food.y * cellH, cellW, cellH);
     }
 
@@ -173,7 +173,7 @@ export default function SnakeGame(): JSX.Element {
       lastTickRef.current = performance.now();
       accumulatedRef.current = 0;
     } else {
-      setRunning(v => !v);
+      setRunning((v: boolean) => !v);
     }
   }
 
