@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Game, Point } from '../lib/game';
+import { Game, Point } from '../lib/game'; // adjust path if your game module is in a different location
 
 /**
  * SnakeGame React component
@@ -11,6 +11,8 @@ import { Game, Point } from '../lib/game';
 const COLS = 24;
 const ROWS = 24;
 const TICK_MS = 120;
+// choose how many obstacles to place on start (can be 0)
+const OBSTACLE_COUNT = 12;
 
 export default function SnakeGame(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -23,7 +25,8 @@ export default function SnakeGame(): JSX.Element {
 
   // initialize game
   useEffect(() => {
-    gameRef.current = new Game({ cols: COLS, rows: ROWS });
+    // pass obstacleCount to Game constructor
+    gameRef.current = new Game({ cols: COLS, rows: ROWS, obstacleCount: OBSTACLE_COUNT });
     setScore(0);
     // ensure canvas size on mount
     fitCanvas();
@@ -103,20 +106,29 @@ export default function SnakeGame(): JSX.Element {
     ctx.fillStyle = '#0b1220';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // food
+    // obstacles (red)
+    if (g.obstacles && g.obstacles.length > 0) {
+      ctx.fillStyle = '#ff0000'; // red for obstacles
+      for (const o of g.obstacles) {
+        ctx.fillRect(o.x * cellW, o.y * cellH, cellW, cellH);
+      }
+    }
+
+    // food (lighter green)
     if (g.food) {
-      ctx.fillStyle = '#ff4d4d';
+      ctx.fillStyle = '#99ff99'; // lighter green for food
       ctx.fillRect(g.food.x * cellW, g.food.y * cellH, cellW, cellH);
     }
 
-    // snake head
+    // snake head (bright green)
     if (g.snake.length > 0) {
       const head = g.snake[0];
-      ctx.fillStyle = '#66ff66';
+      ctx.fillStyle = '#66ff66'; // bright green for snake head
       ctx.fillRect(head.x * cellW, head.y * cellH, cellW, cellH);
     }
-    // snake body
-    ctx.fillStyle = '#2db82d';
+
+    // snake body (darker green)
+    ctx.fillStyle = '#2db82d'; // darker green for snake body
     for (let i = 1; i < g.snake.length; i++) {
       const p = g.snake[i];
       ctx.fillRect(p.x * cellW, p.y * cellH, cellW, cellH);
@@ -153,6 +165,8 @@ export default function SnakeGame(): JSX.Element {
   function onPauseClick() {
     const g = gameRef.current!;
     if (g.over) {
+      // regenerate obstacles on restart
+      g.obstacleCount = OBSTACLE_COUNT;
       g.reset();
       setScore(0);
       setRunning(true);
